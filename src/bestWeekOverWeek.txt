@@ -1,0 +1,51 @@
+drop procedure if exists findBestWeekOverWeek;
+
+DELIMITER //
+
+create procedure findBestWeekOverWeek()
+begin  
+  DECLARE done INT DEFAULT 0;
+  DECLARE currentUser BIGINT DEFAULT 0;
+  DECLARE maxScore, minScore BIGINT DEFAULT 0;
+  DECLARE userIdIterator CURSOR FOR SELECT distinct userid FROM gamescores;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+  
+  OPEN userIdIterator;
+  
+  drop temporary table if exists weekOverWeek;
+  drop temporary table if exists scores;
+  
+  create temporary table scores (score BIGINT, date DATETIME);
+  create temporary table weekOverWeek (userid BIGINT, scoreDelta BIGINT);
+  
+  loopOverUsers: LOOP
+     FETCH userIdIterator into currentUser;
+     
+     # select scores for current user
+     insert into scores select score,timestamp from gamescores where userid=currentUser;
+     
+     # select max for current week
+     select max(score) from scores where WEEKOFYEAR(date)=WEEKOFYEAR(CURDATE()) into maxScore;
+     
+     # select min for previous week
+     select min(score) from scores where WEEKOFYEAR(date)=(WEEKOFYEAR(CURDATE())-1) into minScore;
+     
+     #calculate score diff
+     insert into weekOverWeek values(currentUser,(maxScore-minScore));
+     
+     delete from scores;
+     
+     IF done THEN
+        LEAVE loopOverUsers;
+     END IF;    	
+  END LOOP loopOverUsers;
+
+  CLOSE userIdIterator;
+  
+  select * from weekOverWeek order by scoreDelta desc limit 10;
+  
+  drop temporary table if exists weekOverWeek;
+  drop temporary table if exists scores;
+end//
+
+DELIMITER ;

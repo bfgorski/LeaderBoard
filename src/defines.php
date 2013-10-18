@@ -8,6 +8,8 @@ define('DB_USER', 'root');
 define('DB_PASSWORD', '');
 define('DB_PORT', '8889');
 
+define('GAME_INFO_DB', 'gameinfo');
+
 define('ONE_HOUR_IN_SECONDS', 3600);
 define('ONE_DAY_IN_SECONDS', 86400);
 define('ONE_WEEK_IN_SECONDS', 604800);

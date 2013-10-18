@@ -17,7 +17,6 @@
  */
 require_once('defines.php');
 
-define('GAME_INFO_DB', 'gameinfo');
 define('GAME_SCORES_TABLE', 'gamescores');
 define('COUNT_KEY', 'count(distinct userid)');
 
@@ -98,7 +97,11 @@ class LeaderBoard {
 			
 			$report['topTen'] = $topTen;
 			
-			// top 10 players that improved
+			/* 
+			  top 10 players that had improved scores week over week
+			  
+			  I couldn't get this query to run efficiently.
+			  */
 			
 			$mysqli->close();
 			return $report;

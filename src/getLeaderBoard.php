@@ -49,7 +49,6 @@ _END;
 
 function getLeaderBoard() {
 	$report = LeaderBoard::createReport(FB_APPID);
-	$jsonFormat = json_encode($report);
 	createHTMLReport($report);
 }
 
