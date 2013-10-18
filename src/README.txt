@@ -4,7 +4,7 @@ createTestData.php
  
 getLeaderBoard.php
  - get HTML doc that shows num of players, players that played today and top 10 players.
- - I couldn't the query for top 10 week over week to run efficiently
+ - I couldn't get the query for top 10 week over week to run efficiently
  - tested with curl http://localhost:8888/getLeaderBoard.php
  
  updateLeaderBoard.php
@@ -13,4 +13,11 @@ getLeaderBoard.php
   
 class.LeaderBoard.php
  - methods for writing updates to the DB and creating the report
+ 
+ class.Utils.php
+  - utility methods for creating db tables and test data
+  
+ bestWeekOverWeek.txt
+  - SQL query to calculate users with the best week over week improvement
+  - I think the query is correct but it runs too slow.
    
